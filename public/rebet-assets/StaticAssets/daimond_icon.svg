@@ -1,0 +1,12 @@
+<svg viewBox="0 0 96 96" class="svg-icon" style="width: 18px; height: 18px;" xmlns="http://www.w3.org/2000/svg">
+  <title></title>
+  <path fill="#BDE9FF" d="M79.48 19.64c-21.04 3.04-42.04 3-63 0L0 43.64 48 96l48-52.36z"></path>
+  <path fill="#fff" d="M27.68 55.52 48 96l20.32-40.48s-23.16-7.16-40.64 0"></path>
+  <path fill="#B0B8FC" d="M16.52 19.64S43.12 21.48 48 30.68c0 0-12.48 23.96-20.32 24.84 0 0-14.68-26.64-11.16-35.84z"></path>
+  <path fill="#fff" d="M48 30.68 27.68 55.52h40.64z"></path>
+  <path fill="#B0B8FC" d="M96 43.64 48 96l20.32-40.48z"></path>
+  <path fill="#BDE9FF" d="M0 43.64 48 96 27.68 55.52z"></path>
+  <path fill="#B0B8FC" d="m16.52 19.64 11.16 35.88L0 43.64z"></path>
+  <path fill="#fff" d="M79.48 19.64 68.32 55.52 96 43.64zm-62.96 0L48 30.68l31.48-11.04z"></path>
+  <path fill="#0F212E" d="M42.56 29.84h10.88v36H42.56z"></path>
+</svg>
