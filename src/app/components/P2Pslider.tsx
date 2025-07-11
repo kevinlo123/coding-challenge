@@ -46,8 +46,8 @@ export default function P2Pslider() {
                      </div>
                   </div>
                </div>
-               <div className="absolute z-2 uppercase self-center justify-self-center left-[0] right-[0] bg-[#14141B] p-2 rounded-[50%]">
-                  <p className="italic font-bold text-[12px] sm:text-[16px]">vs.</p>
+               <div className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#14141B] p-2 rounded-full w-10 h-10 flex items-center justify-center">
+                  <p className="italic font-bold text-[12px] sm:text-[16px] uppercase">vs.</p>
                </div>
                <div className="bg-[linear-gradient(90deg,#25252F_0%,#14141B_100%)] w-[60%] p-[18px] clip-diagonal-right">
                   <div className="flex flex-row justify-end items-center text-right">
