@@ -103,14 +103,49 @@ export default function P2Pslider() {
                         <Image src={p2pData.game.teams[1].img} alt="team logo" width={60} height={60} />
                      </div>
                      <p className="font-semibold text-[12px] sm:text-[18px] mt-4">{p2pData.game.teams[1].teamname}</p>
-                     <div className="bet-line relative mt-8 py-1.5 px-10 sm:px-[48px] bg-[rgba(20,20,27,0.5)]  rounded-[12px]">
+                     <div className="bet-line relative mt-9 py-1.5 px-10 sm:px-[48px] bg-[rgba(20,20,27,0.5)]  rounded-[12px]">
                         <p className="text-[13px]">{p2pData.received_by.bet_type}</p>
                         <p className="text-[#FD6F27] text-[14px]">{p2pData.received_by.line}</p>
                      </div>
                   </div>
                </div>
+               <div className="flex justify-between mt-6 px-0 max-w-[425px] mx-auto"> 
+                  <div className="flex flex-col items-start w-[42%]">
+                     <div className="flex items-center w-full mb-2 justify-between">
+                        <p className="font-extralight uppercase text-[10px] sm:text-[12px]">Bet Amount</p>
+                        <div className="flex items-center">
+                           <p className="text-[12px] sm:text-[16px]">{p2pData.created_by.bet_amount}.00</p>
+                           <Image src="/rebet-assets/StaticAssets/rebet-cash.webp" alt="cash icon"  className="ml-2 h-[17px]" width={17} height={17} />
+                        </div>
+                     </div>
+                     <div className="flex items-center w-full justify-between">
+                        <p className="font-extralight uppercase text-[10px] sm:text-[12px]">Payout</p>
+                        <div className="flex items-center">
+                           <p className="text-[12px] sm:text-[16px]">{p2pData.created_by.bet_payout}.00</p>
+                           <Image src="/rebet-assets/StaticAssets/rebet-cash.webp" className="ml-2 h-[17px]" alt="cash icon" width={17} height={17} />
+                        </div>
+                     </div>
+                  </div>
+                  <div className="h-[52px] w-[2px] bg-[rgba(250,249,246,0.1)]"></div>
+                  <div className="flex flex-col items-end w-[42%]">
+                     <div className="flex flex-row-reverse items-center mb-2 w-full justify-between">
+                        <p className="font-extralight uppercase text-[10px] sm:text-[12px]">Bet Amount</p>
+                        <div className="flex items-center">
+                           <p className="text-[12px] sm:text-[16px]">{p2pData.received_by.bet_amount}.00</p>
+                           <Image src="/rebet-assets/StaticAssets/rebet-cash.webp" className="ml-2 h-[17px]" alt="cash icon" width={17} height={17} />
+                        </div>
+                     </div>
+                     <div className="flex flex-row-reverse items-center w-full justify-between">
+                        <p className="font-extralight uppercase text-[10px] sm:text-[12px]">Payout</p>
+                        <div className="flex items-center">
+                           <p className="text-[12px] sm:text-[16px]">{p2pData.received_by.bet_payout}.00</p>
+                           <Image src="/rebet-assets/StaticAssets/rebet-cash.webp" className="ml-2 h-[17px]" alt="cash icon" width={17} height={17} />
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
-            
+
          </div>
       </div>
    );
