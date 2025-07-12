@@ -34,6 +34,8 @@ export default function P2Pslider() {
    return (
       <div className="p2p-component max-w-[500px] mx-auto my-0">
          <div className="p2p-component__inner relative rounded-[24px] overflow-hidden">
+
+
             <div className="p2p-component__top flex bg-[linear-gradient(90deg,#25252F_0%,#14141B_100%)] relative">
                <div className="w-[40%] p-[18px] clip-diagonal-left">
                   <div className="flex flex-row-reverse justify-end items-center">
@@ -64,6 +66,7 @@ export default function P2Pslider() {
                   </div>
                </div>
             </div>
+
 
             <div className="p-[18px] bg-[linear-gradient(180deg,rgba(101,43,24,0.5)_0%,#25252F_100%)]">
                <div className="flex flex-row items-center justify-between">
@@ -109,6 +112,8 @@ export default function P2Pslider() {
                      </div>
                   </div>
                </div>
+
+
                <div className="flex justify-between mt-6 px-0 max-w-[425px] mx-auto"> 
                   <div className="flex flex-col items-start w-[42%]">
                      <div className="flex items-center w-full mb-2 justify-between">
@@ -144,8 +149,25 @@ export default function P2Pslider() {
                      </div>
                   </div>
                </div>
-            </div>
 
+               <div className="orb-slider relative flex items-center justify-around bg-[rgba(20,20,27,0.5)] h-[83px] px-2 rounded-[28px] mt-6 mb-3">
+                  <div className="flex items-center">
+                     <Image src="/rebet-assets/StaticAssets/white_close.png" className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35}   />
+                     <p className="text-[12px] sm:text-[16px] font-semibold ml-1">Decline</p>
+                  </div>
+                  <div className="flex items-center relative">
+                     <Image src="/rebet-assets/StaticAssets/orange_left_arrows.png" className="h-[40px] absolute -left-[20px]" alt="" width={65} height={45}  />
+                     <Image src="/rebet-assets/StaticAssets/orange_button.png" className="relative -top-[2.5px]" alt="draggable orb" width={150} height={150}  />
+                     <Image src="/rebet-assets/StaticAssets/orange_right_arrows.png" className="h-[40px] absolute -right-[20px]" alt="" width={65} height={45}  />
+                  </div>
+                  <div className="flex items-center"> 
+                     <p className="text-[12px] sm:text-[16px] font-semibold mr-1">Accept</p>
+                     <Image src="/rebet-assets/StaticAssets/white_check.png" className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35}  />
+                  </div>
+               </div>
+
+               
+            </div>
          </div>
       </div>
    );
