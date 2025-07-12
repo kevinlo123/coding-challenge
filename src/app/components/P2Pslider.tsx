@@ -21,11 +21,8 @@ export default function P2Pslider() {
 
   const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
       if (!isDragging || !sliderRef.current || !buttonRef.current) return;
-
       const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const rect = sliderRef.current.getBoundingClientRect();
       const newX = clientX - startX;
-
       const maxDrag = 175;
       const constrainedX = Math.max(-maxDrag, Math.min(maxDrag, newX));
       setPosition(constrainedX);
