@@ -282,16 +282,16 @@ export default function P2Pslider() {
          {panelState.action === "accepted" ? (
             <div className="text-center">
                <p className="text-[14px] text-white mb-4">
-                  You've successfully accepted the bet against {p2pData.created_by.username}! Your wager of {p2pData.received_by.bet_amount}.00 has been placed.
+                  You&rsquo;ve successfully accepted the bet against {p2pData.created_by.username}! Your wager of {p2pData.received_by.bet_amount}.00 has been placed.
                </p>
                <p className="text-[12px] text-[#FD6F27]">
-                  You'll be notified of the outcome on {p2pData.game.date} at {p2pData.game.time}.
+                  You&rsquo;ll be notified of the outcome on {p2pData.game.date} at {p2pData.game.time}.
                </p>
             </div>
          ) : (
             <div className="text-center">
                <p className="text-[14px] text-white mb-4">
-                  You've declined the bet from {p2pData.created_by.username}.
+                  You&rsquo;ve declined the bet from {p2pData.created_by.username}.
                </p>
                <p className="text-[12px] text-[#FD6F27]">
                   Explore other betting opportunities or create your own!
