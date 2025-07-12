@@ -1,11 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { P2Pdata } from "../../types/P2Pdata";
 import Image from "next/image";
 
 export default function P2Pslider() {
    const [p2pData, setP2pData] = useState<P2Pdata | null>(null);
+   const sliderRef =  useRef<HTMLDivElement>(null);;  
+   const buttonRef = useRef<HTMLDivElement>(null); 
+   const [isDragging, setIsDragging] = useState(false);
+   const [position, setPosition] = useState(0); 
+   const [startX, setStartX] = useState(0); 
+
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+      e.preventDefault();
+      setIsDragging(true);
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      setStartX(clientX - position); 
+  };
+
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+      if (!isDragging || !sliderRef.current || !buttonRef.current) return;
+
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const rect = sliderRef.current.getBoundingClientRect();
+      const newX = clientX - startX;
+
+      const maxDrag = 175;
+      const constrainedX = Math.max(-maxDrag, Math.min(maxDrag, newX));
+      setPosition(constrainedX);
+  };
+
+  const handleDragEnd = () => {
+      setIsDragging(false);
+      const maxDrag = 150; 
+      if (position >= maxDrag) {
+         console.log("Accepted");
+      } else if (position <= -maxDrag) {
+         console.log("Declined");
+      }
+      setPosition(0);
+  };
 
    useEffect(() => {
       const fetchData = async () => {
@@ -150,14 +185,38 @@ export default function P2Pslider() {
                   </div>
                </div>
 
-               <div className="orb-slider relative flex items-center justify-around bg-[rgba(20,20,27,0.5)] h-[83px] px-2 rounded-[28px] mt-6 mb-3">
+               <div       
+                  ref={sliderRef}
+                  onMouseMove={handleDragMove}
+                  onTouchMove={handleDragMove}
+                  onMouseUp={handleDragEnd}
+                  onTouchEnd={handleDragEnd}
+                  onMouseLeave={handleDragEnd} 
+                  className="orb-slider relative flex items-center justify-around bg-[rgba(20,20,27,0.5)] h-[83px] px-2 rounded-[28px] mt-6 mb-3"
+               >
                   <div className="flex items-center">
                      <Image src="/rebet-assets/StaticAssets/white_close.png" className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35}   />
                      <p className="text-[12px] sm:text-[16px] font-semibold ml-1">Decline</p>
                   </div>
                   <div className="flex items-center relative">
                      <Image src="/rebet-assets/StaticAssets/orange_left_arrows.png" className="h-[40px] absolute -left-[20px]" alt="" width={65} height={45}  />
-                     <Image src="/rebet-assets/StaticAssets/orange_button.png" className="relative -top-[2.5px]" alt="draggable orb" width={150} height={150}  />
+                     <div
+                        ref={buttonRef}
+                        className={`relative -top-[2.5px] cursor-grab active:cursor-grabbing w-[150px] h-[150px] ${
+                           isDragging ? "" : "transition-transform duration-300 ease-out"
+                        }`}
+                        style={{ transform: `translateX(${position}px)` }}
+                        onMouseDown={handleDragStart}
+                        onTouchStart={handleDragStart}
+                     >
+                        <Image
+                           src="/rebet-assets/StaticAssets/orange_button.png"
+                           alt="Draggable orb"
+                           width={150}
+                           height={150}
+                           className="relative -bottom-[10px]"
+                        />
+                     </div>              
                      <Image src="/rebet-assets/StaticAssets/orange_right_arrows.png" className="h-[40px] absolute -right-[20px]" alt="" width={65} height={45}  />
                   </div>
                   <div className="flex items-center"> 
