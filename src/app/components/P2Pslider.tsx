@@ -11,24 +11,36 @@ export default function P2Pslider() {
    const [isDragging, setIsDragging] = useState(false);
    const [position, setPosition] = useState(0); 
    const [startX, setStartX] = useState(0); 
+   const [sliderColor, setSliderColor] = useState("orange");
 
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+
+   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
       e.preventDefault();
       setIsDragging(true);
       const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
       setStartX(clientX - position); 
-  };
+   };
 
-  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+   const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
       if (!isDragging || !sliderRef.current || !buttonRef.current) return;
+
       const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
       const newX = clientX - startX;
       const maxDrag = 175;
       const constrainedX = Math.max(-maxDrag, Math.min(maxDrag, newX));
-      setPosition(constrainedX);
-  };
 
-  const handleDragEnd = () => {
+      setPosition(constrainedX);
+
+      if (constrainedX > 10) {
+         setSliderColor("green"); 
+      } else if (constrainedX < -10) {
+         setSliderColor("red"); 
+      } else {
+         setSliderColor("orange"); 
+      }
+   };
+
+   const handleDragEnd = () => {
       setIsDragging(false);
       const maxDrag = 150; 
       if (position >= maxDrag) {
@@ -37,7 +49,8 @@ export default function P2Pslider() {
          console.log("Declined");
       }
       setPosition(0);
-  };
+      setSliderColor("orange"); 
+   };
 
    useEffect(() => {
       const fetchData = async () => {
@@ -62,6 +75,13 @@ export default function P2Pslider() {
    if (!p2pData) {
       return <p>Loading...</p>;
    }
+
+
+   const leftArrowImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_left_arrows.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_left_arrows.png" : "/rebet-assets/StaticAssets/orange_left_arrows.png"
+   const rightArrowImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_right_arrows.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_right_arrows.png" : "/rebet-assets/StaticAssets/orange_right_arrows.png"
+   const closeImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_close.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_close.png" : "/rebet-assets/StaticAssets/white_close.png"
+   const checkImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_check.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_check.png" : "/rebet-assets/StaticAssets/white_check.png"
+   const orbImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_button.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_button.png" : "/rebet-assets/StaticAssets/orange_button.png"
 
    return (
       <div className="p2p-component max-w-[500px] mx-auto my-0">
@@ -189,14 +209,14 @@ export default function P2Pslider() {
                   onMouseUp={handleDragEnd}
                   onTouchEnd={handleDragEnd}
                   onMouseLeave={handleDragEnd} 
-                  className="orb-slider relative flex items-center justify-around bg-[rgba(20,20,27,0.5)] h-[83px] px-2 rounded-[28px] mt-6 mb-3"
+                  className={`orb-slider effect--${sliderColor} relative flex items-center justify-around bg-[rgba(20,20,27,0.5)] h-[83px] px-2 rounded-[28px] mt-6 mb-3 overflow-hidden`}
                >
                   <div className="flex items-center">
-                     <Image src="/rebet-assets/StaticAssets/white_close.png" className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35}   />
+                     <Image src={closeImageSrc} className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35}   />
                      <p className="text-[12px] sm:text-[16px] font-semibold ml-1">Decline</p>
                   </div>
                   <div className="flex items-center relative">
-                     <Image src="/rebet-assets/StaticAssets/orange_left_arrows.png" className="h-[40px] absolute -left-[20px]" alt="" width={65} height={45}  />
+                     <Image src={leftArrowImageSrc} className="h-[40px] absolute -left-[20px]" alt="" width={65} height={45}  />
                      <div
                         ref={buttonRef}
                         className={`relative -top-[2.5px] cursor-grab active:cursor-grabbing w-[150px] h-[150px] ${
@@ -207,18 +227,18 @@ export default function P2Pslider() {
                         onTouchStart={handleDragStart}
                      >
                         <Image
-                           src="/rebet-assets/StaticAssets/orange_button.png"
+                           src={orbImageSrc}
                            alt="Draggable orb"
                            width={150}
                            height={150}
                            className="relative -bottom-[10px]"
                         />
                      </div>              
-                     <Image src="/rebet-assets/StaticAssets/orange_right_arrows.png" className="h-[40px] absolute -right-[20px]" alt="" width={65} height={45}  />
+                     <Image src={rightArrowImageSrc} className="h-[40px] absolute -right-[20px]" alt="" width={65} height={45}  />
                   </div>
                   <div className="flex items-center"> 
                      <p className="text-[12px] sm:text-[16px] font-semibold mr-1">Accept</p>
-                     <Image src="/rebet-assets/StaticAssets/white_check.png" className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35}  />
+                     <Image src={checkImageSrc} className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35}  />
                   </div>
                </div>
 
