@@ -109,6 +109,38 @@ body {
     }
   }
 
+    .effect-border--red {
+      &:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        padding: 1px;
+        border-radius: inherit;
+        background: linear-gradient(90deg,rgba(98, 22, 49, 1) 0%, rgba(218, 73, 108, 1) 50%, rgba(98, 22, 49, 1) 100%);        
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        z-index: 1;
+    }
+  }
+
+    .effect-border--green {
+      &:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        padding: 1px;
+        border-radius: inherit;
+        background: linear-gradient(90deg,rgba(26, 80, 62, 1) 0%, rgba(64, 198, 134, 1) 50%, rgba(26, 80, 62, 1) 100%);        
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        z-index: 1;
+    }
+  }
+
   .effect--orange {
       &:before {
         content: "";

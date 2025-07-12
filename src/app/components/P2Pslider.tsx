@@ -3,6 +3,9 @@
 import { useEffect, useState, useRef } from "react";
 import { P2Pdata } from "../../types/P2Pdata";
 import Image from "next/image";
+import AnimatedLeftArrows from '../../../public/rebet-assets/AnimatedAssets/glowing_left_arrows.json';
+import AnimatedRightArrows from '../../../public/rebet-assets/AnimatedAssets/glowing_right_arrows.json';
+import Lottie from "lottie-react";
 
 export default function P2Pslider() {
    const [p2pData, setP2pData] = useState<P2Pdata | null>(null);
@@ -26,7 +29,7 @@ export default function P2Pslider() {
 
       const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
       const newX = clientX - startX;
-      const maxDrag = 175;
+      const maxDrag = 200;
       const constrainedX = Math.max(-maxDrag, Math.min(maxDrag, newX));
 
       setPosition(constrainedX);
@@ -42,7 +45,7 @@ export default function P2Pslider() {
 
    const handleDragEnd = () => {
       setIsDragging(false);
-      const maxDrag = 150; 
+      const maxDrag = 175; 
       if (position >= maxDrag) {
          console.log("Accepted");
       } else if (position <= -maxDrag) {
@@ -84,8 +87,8 @@ export default function P2Pslider() {
    const orbImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_button.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_button.png" : "/rebet-assets/StaticAssets/orange_button.png"
 
    return (
-      <div className="p2p-component max-w-[500px] mx-auto my-0">
-         <div className="p2p-component__inner relative rounded-[24px] overflow-hidden">
+      <div className="p2p-component max-w-[500px] mx-auto my-0 mt-8">
+         <div className={`p2p-component__inner relative rounded-[24px] overflow-hidden effect-border--${sliderColor}`}>
 
 
             <div className="p2p-component__top flex bg-[linear-gradient(90deg,#25252F_0%,#14141B_100%)] relative">
@@ -216,7 +219,12 @@ export default function P2Pslider() {
                      <p className="text-[12px] sm:text-[16px] font-semibold ml-1">Decline</p>
                   </div>
                   <div className="flex items-center relative">
-                     <Image src={leftArrowImageSrc} className="h-[40px] absolute -left-[20px]" alt="" width={65} height={45}  />
+                     <Image src={leftArrowImageSrc} className={`h-[40px] absolute -left-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45}  />
+                     <Lottie
+                        animationData={AnimatedLeftArrows}
+                        loop={true}
+                        className={`h-[40px] w-[65px] absolute -left-[20px] ${isDragging ? "hidden" : "block"}`}
+                     />
                      <div
                         ref={buttonRef}
                         className={`relative -top-[2.5px] cursor-grab active:cursor-grabbing w-[150px] h-[150px] ${
@@ -234,7 +242,12 @@ export default function P2Pslider() {
                            className="relative -bottom-[10px]"
                         />
                      </div>              
-                     <Image src={rightArrowImageSrc} className="h-[40px] absolute -right-[20px]" alt="" width={65} height={45}  />
+                     <Image src={rightArrowImageSrc} className={`h-[40px] absolute -right-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45}  />
+                      <Lottie
+                        animationData={AnimatedRightArrows}
+                        loop={true}
+                        className={`h-[40px] absolute -right-[20px] ${isDragging ? "hidden" : "block"}`}
+                     />
                   </div>
                   <div className="flex items-center"> 
                      <p className="text-[12px] sm:text-[16px] font-semibold mr-1">Accept</p>
