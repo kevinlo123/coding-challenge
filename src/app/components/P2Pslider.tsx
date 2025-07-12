@@ -246,7 +246,7 @@ export default function P2Pslider() {
                       <Lottie
                         animationData={AnimatedRightArrows}
                         loop={true}
-                        className={`h-[40px] absolute -right-[20px] ${isDragging ? "hidden" : "block"}`}
+                        className={`h-[40px] w-[65px] absolute -right-[20px] ${isDragging ? "hidden" : "block"}`}
                      />
                   </div>
                   <div className="flex items-center"> 
