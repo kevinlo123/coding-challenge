@@ -9,19 +9,28 @@ import Lottie from "lottie-react";
 
 export default function P2Pslider() {
    const [p2pData, setP2pData] = useState<P2Pdata | null>(null);
-   const sliderRef =  useRef<HTMLDivElement>(null);;  
+   const sliderRef = useRef<HTMLDivElement>(null);  
    const buttonRef = useRef<HTMLDivElement>(null); 
    const [isDragging, setIsDragging] = useState(false);
    const [position, setPosition] = useState(0); 
    const [startX, setStartX] = useState(0); 
    const [sliderColor, setSliderColor] = useState("orange");
+   const [panelState, setPanelState] = useState<{
+      isOpen: boolean;
+      action: "accepted" | "declined" | null;
+   }>({ isOpen: false, action: null });
 
+   const closePanel = () => {
+      console.log("Closing panel");
+      setPanelState({ isOpen: false, action: null });
+   };
 
    const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
       e.preventDefault();
       setIsDragging(true);
       const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
       setStartX(clientX - position); 
+      console.log("Drag started, clientX:", clientX, "startX:", clientX - position);
    };
 
    const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
@@ -47,9 +56,11 @@ export default function P2Pslider() {
       setIsDragging(false);
       const maxDrag = 175; 
       if (position >= maxDrag) {
-         console.log("Accepted");
+         setPanelState({ isOpen: true, action: "accepted" });
       } else if (position <= -maxDrag) {
-         console.log("Declined");
+         setPanelState({ isOpen: true, action: "declined" });
+      } else {
+         console.log("Position not enough to trigger panel:", position);
       }
       setPosition(0);
       setSliderColor("orange"); 
@@ -79,18 +90,15 @@ export default function P2Pslider() {
       return <p>Loading...</p>;
    }
 
-
-   const leftArrowImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_left_arrows.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_left_arrows.png" : "/rebet-assets/StaticAssets/orange_left_arrows.png"
-   const rightArrowImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_right_arrows.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_right_arrows.png" : "/rebet-assets/StaticAssets/orange_right_arrows.png"
-   const closeImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_close.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_close.png" : "/rebet-assets/StaticAssets/white_close.png"
-   const checkImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_check.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_check.png" : "/rebet-assets/StaticAssets/white_check.png"
-   const orbImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_button.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_button.png" : "/rebet-assets/StaticAssets/orange_button.png"
+   const leftArrowImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_left_arrows.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_left_arrows.png" : "/rebet-assets/StaticAssets/orange_left_arrows.png";
+   const rightArrowImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_right_arrows.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_right_arrows.png" : "/rebet-assets/StaticAssets/orange_right_arrows.png";
+   const closeImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_close.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_close.png" : "/rebet-assets/StaticAssets/white_close.png";
+   const checkImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_check.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_check.png" : "/rebet-assets/StaticAssets/white_check.png";
+   const orbImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_button.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_button.png" : "/rebet-assets/StaticAssets/orange_button.png";
 
    return (
-      <div className="p2p-component max-w-[500px] mx-auto my-0 mt-8">
+      <div className="p2p-component max-w-[500px] mx-auto my-0 mt-8 relative">
          <div className={`p2p-component__inner relative rounded-[24px] overflow-hidden effect-border--${sliderColor}`}>
-
-
             <div className="p2p-component__top flex bg-[linear-gradient(90deg,#25252F_0%,#14141B_100%)] relative">
                <div className="w-[40%] p-[18px] clip-diagonal-left">
                   <div className="flex flex-row-reverse justify-end items-center">
@@ -109,23 +117,21 @@ export default function P2Pslider() {
                <div className="bg-[linear-gradient(90deg,#25252F_0%,#14141B_100%)] w-[60%] p-[18px] clip-diagonal-right">
                   <div className="flex flex-row justify-end items-center text-right">
                      <div className="mr-4">
-                        <p className="text-[12px] sm:text-[16px]">{p2pData.received_by.username ? "You": ""}</p>
+                        <p className="text-[12px] sm:text-[16px]">{p2pData.received_by.username ? "You" : ""}</p>
                         <span className="text-[#FD6F27] text-[12px] sm:text-[14px]">{p2pData.status === "PENDING" ? "Waiting..." : ""}</span>
                      </div>
                      <div className="w-12 h-12 bg-[#652B18] rounded-full flex items-center justify-center text-[#D87A2A] font-bold relative opacity-40">
                         <span>{p2pData.received_by.username?.charAt(0).toUpperCase()}</span>
                         <div className="user-rank absolute bottom-[0%] left-[-18%] bg-black p-1 rounded-[50%]">
-                           <Image src={p2pData.received_by.rank} alt="rank Icon" width={15} height={15}  />
+                           <Image src={p2pData.received_by.rank} alt="rank Icon" width={15} height={15} />
                         </div>
                      </div>
                   </div>
                </div>
             </div>
-
-
             <div className="p-[18px] bg-[linear-gradient(180deg,rgba(101,43,24,0.5)_0%,#25252F_100%)]">
                <div className="flex flex-row items-center justify-between">
-                  <div className="flex align-center">
+                  <div className="flex items-center">
                      <Image src="/rebet-assets/StaticAssets/football_icon.svg" alt="football icon" width={17} height={17} />
                      <span className="ml-2 text-[12px] sm:text-[16px]">{p2pData.sport}</span>
                   </div>
@@ -161,21 +167,19 @@ export default function P2Pslider() {
                         <Image src={p2pData.game.teams[1].img} alt="team logo" width={60} height={60} />
                      </div>
                      <p className="font-semibold text-[12px] sm:text-[18px] mt-4">{p2pData.game.teams[1].teamname}</p>
-                     <div className="bet-line relative mt-9 py-1.5 px-10 sm:px-[48px] bg-[rgba(20,20,27,0.5)]  rounded-[12px]">
+                     <div className="bet-line relative mt-9 py-1.5 px-10 sm:px-[48px] bg-[rgba(20,20,27,0.5)] rounded-[12px]">
                         <p className="text-[13px]">{p2pData.received_by.bet_type}</p>
                         <p className="text-[#FD6F27] text-[14px]">{p2pData.received_by.line}</p>
                      </div>
                   </div>
                </div>
-
-
                <div className="flex justify-between mt-6 px-0 max-w-[425px] mx-auto"> 
                   <div className="flex flex-col items-start w-[42%]">
                      <div className="flex items-center w-full mb-2 justify-between">
                         <p className="font-extralight uppercase text-[10px] sm:text-[12px]">Bet Amount</p>
                         <div className="flex items-center">
                            <p className="text-[12px] sm:text-[16px]">{p2pData.created_by.bet_amount}.00</p>
-                           <Image src="/rebet-assets/StaticAssets/rebet-cash.webp" alt="cash icon"  className="ml-2 h-[17px]" width={17} height={17} />
+                           <Image src="/rebet-assets/StaticAssets/rebet-cash.webp" alt="cash icon" className="ml-2 h-[17px]" width={17} height={17} />
                         </div>
                      </div>
                      <div className="flex items-center w-full justify-between">
@@ -204,7 +208,6 @@ export default function P2Pslider() {
                      </div>
                   </div>
                </div>
-
                <div       
                   ref={sliderRef}
                   onMouseMove={handleDragMove}
@@ -215,11 +218,11 @@ export default function P2Pslider() {
                   className={`orb-slider effect--${sliderColor} relative flex items-center justify-around bg-[rgba(20,20,27,0.5)] h-[83px] px-2 rounded-[28px] mt-6 mb-3 overflow-hidden`}
                >
                   <div className="flex items-center">
-                     <Image src={closeImageSrc} className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35}   />
+                     <Image src={closeImageSrc} className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35} />
                      <p className="text-[12px] sm:text-[16px] font-semibold ml-1">Decline</p>
                   </div>
                   <div className="flex items-center relative">
-                     <Image src={leftArrowImageSrc} className={`h-[40px] absolute -left-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45}  />
+                     <Image src={leftArrowImageSrc} className={`h-[40px] absolute -left-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45} />
                      <Lottie
                         animationData={AnimatedLeftArrows}
                         loop={true}
@@ -227,7 +230,7 @@ export default function P2Pslider() {
                      />
                      <div
                         ref={buttonRef}
-                        className={`relative -top-[2.5px] cursor-grab active:cursor-grabbing w-[150px] h-[150px] ${
+                        className={`relative -top-[2.5px] cursor-grab active:cursor-grabbing w-[150px] h-[150px] z-2 ${
                            isDragging ? "" : "transition-transform duration-300 ease-out"
                         }`}
                         style={{ transform: `translateX(${position}px)` }}
@@ -242,22 +245,77 @@ export default function P2Pslider() {
                            className="relative -bottom-[10px]"
                         />
                      </div>              
-                     <Image src={rightArrowImageSrc} className={`h-[40px] absolute -right-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45}  />
-                      <Lottie
+                     <Image src={rightArrowImageSrc} className={`h-[40px] absolute -right-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45} />
+                     <Lottie
                         animationData={AnimatedRightArrows}
                         loop={true}
-                        className={`h-[40px] w-[65px] absolute -right-[20px] ${isDragging ? "hidden" : "block"}`}
+                        className={`h-[40px] w-[65px] absolute -right-[20px] z-[0] ${isDragging ? "hidden" : "block"}`}
                      />
                   </div>
                   <div className="flex items-center"> 
                      <p className="text-[12px] sm:text-[16px] font-semibold mr-1">Accept</p>
-                     <Image src={checkImageSrc} className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35}  />
+                     <Image src={checkImageSrc} className="h-[20px] sm:h-[35px] w-[20px] sm:w-[35px] mb-sm-hide" alt="" width={35} height={35} />
                   </div>
                </div>
-
-               
             </div>
          </div>
+         <div
+            className={`fixed bottom-[50%] left-0 right-0 bg-black rounded-[24px] p-6 transition-all duration-300 ease-in-out max-w-[500px] mx-auto z-[1000] ${
+               panelState.isOpen
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-full pointer-events-none"
+            }`}
+         >
+         <div className="flex justify-between items-center mb-4">
+            <h2 className="text-[18px] font-bold text-white">
+               {panelState.action === "accepted" ? "Bet Accepted!" : "Bet Declined"}
+            </h2>
+            <button onClick={closePanel}>
+               <Image
+                  src={"/rebet-assets/StaticAssets/white_close.png"}
+                  alt="Close panel"
+                  width={24}
+                  height={24}
+               />
+            </button>
+         </div>
+         {panelState.action === "accepted" ? (
+            <div className="text-center">
+               <p className="text-[14px] text-white mb-4">
+                  You've successfully accepted the bet against {p2pData.created_by.username}! Your wager of {p2pData.received_by.bet_amount}.00 has been placed.
+               </p>
+               <p className="text-[12px] text-[#FD6F27]">
+                  You'll be notified of the outcome on {p2pData.game.date} at {p2pData.game.time}.
+               </p>
+            </div>
+         ) : (
+            <div className="text-center">
+               <p className="text-[14px] text-white mb-4">
+                  You've declined the bet from {p2pData.created_by.username}.
+               </p>
+               <p className="text-[12px] text-[#FD6F27]">
+                  Explore other betting opportunities or create your own!
+               </p>
+            </div>
+         )}
+         <button
+            onClick={closePanel}
+            className={`mt-6 w-full py-3 rounded-[12px] text-[16px] font-semibold text-white ${
+               panelState.action === "accepted"
+               ? "bg-[linear-gradient(90deg,#34C759_0%,#28A745_100%)]"
+               : "bg-[linear-gradient(90deg,#FC4233_0%,#D32F2F_100%)]"
+            }`}
+         >
+            {panelState.action === "accepted" ? "View Bet Details" : "Back to Bets"}
+         </button>
+         </div>
+
+         {panelState.isOpen && (
+            <div
+               className="fixed inset-0 bg-black opacity-50 z-[999]"
+               onClick={closePanel}
+            ></div>
+         )}
       </div>
    );
 }
