@@ -142,7 +142,7 @@ export default function P2Pslider() {
                </div>
                <div className="flex items-center text-center justify-between mt-6">
                   <div className="w-[33%] flex items-center flex-col">
-                     <div className="bg-black rounded-full py-4 px-2.5">
+                     <div className="accent bg-black rounded-full relative py-4 px-2.5">
                         <Image src={p2pData.game.teams[0].img} alt="team logo" width={60} height={60} />
                      </div>
                      <p className="font-semibold text-[12px] sm:text-[18px] mt-4">{p2pData.game.teams[0].teamname}</p>
