@@ -20,8 +20,9 @@ export default function P2Pslider() {
       action: "accepted" | "declined" | null;
    }>({ isOpen: false, action: null });
 
+   const getAssetPath = (color: string = "orange", asset: string) => `/rebet-assets/StaticAssets/${color}_${asset}.png`;
+
    const closePanel = () => {
-      console.log("Closing panel");
       setPanelState({ isOpen: false, action: null });
    };
 
@@ -90,11 +91,11 @@ export default function P2Pslider() {
       return <p>Loading...</p>;
    }
 
-   const leftArrowImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_left_arrows.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_left_arrows.png" : "/rebet-assets/StaticAssets/orange_left_arrows.png";
-   const rightArrowImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_right_arrows.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_right_arrows.png" : "/rebet-assets/StaticAssets/orange_right_arrows.png";
-   const closeImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_close.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_close.png" : "/rebet-assets/StaticAssets/white_close.png";
-   const checkImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_check.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_check.png" : "/rebet-assets/StaticAssets/white_check.png";
-   const orbImageSrc = sliderColor === "red" ? "/rebet-assets/StaticAssets/red_button.png" : sliderColor === "green" ? "/rebet-assets/StaticAssets/green_button.png" : "/rebet-assets/StaticAssets/orange_button.png";
+   const leftArrowImageSrc = getAssetPath(sliderColor, "left_arrows");
+   const rightArrowImageSrc = getAssetPath(sliderColor, "right_arrows");
+   const closeImageSrc = getAssetPath(sliderColor === "orange" ? "white" : sliderColor, "close");
+   const checkImageSrc = getAssetPath(sliderColor === "orange" ? "white" : sliderColor, "check");
+   const orbImageSrc = getAssetPath(sliderColor, "button");
 
    return (
       <div className="p2p-component max-w-[500px] mx-auto my-0 mt-8 relative">
@@ -145,7 +146,7 @@ export default function P2Pslider() {
                         <Image src={p2pData.game.teams[0].img} alt="team logo" width={60} height={60} />
                      </div>
                      <p className="font-semibold text-[12px] sm:text-[18px] mt-4">{p2pData.game.teams[0].teamname}</p>
-                     <div className="bet-line relative mt-8 py-1.5 px-10 sm:px-[48px] bg-[rgba(20,20,27,0.5)] rounded-[12px]">
+                     <div className="bet-line relative mt-8 py-1.5 px-10 sm:px-[48px] bg-[#393845] rounded-[12px]">
                         <p className="text-[13px]">{p2pData.created_by.bet_type}</p>
                         <p className="text-[#FD6F27] text-[14px]">{p2pData.created_by.line}</p>
                      </div>
@@ -167,7 +168,7 @@ export default function P2Pslider() {
                         <Image src={p2pData.game.teams[1].img} alt="team logo" width={60} height={60} />
                      </div>
                      <p className="font-semibold text-[12px] sm:text-[18px] mt-4">{p2pData.game.teams[1].teamname}</p>
-                     <div className="bet-line relative mt-9 py-1.5 px-10 sm:px-[48px] bg-[rgba(20,20,27,0.5)] rounded-[12px]">
+                     <div className="bet-line relative mt-9 py-1.5 px-10 sm:px-[48px] bg-[#393845] rounded-[12px]">
                         <p className="text-[13px]">{p2pData.received_by.bet_type}</p>
                         <p className="text-[#FD6F27] text-[14px]">{p2pData.received_by.line}</p>
                      </div>
@@ -222,7 +223,7 @@ export default function P2Pslider() {
                      <p className="text-[12px] sm:text-[16px] font-semibold ml-1">Decline</p>
                   </div>
                   <div className="flex items-center relative">
-                     <Image src={leftArrowImageSrc} className={`h-[40px] absolute -left-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45} />
+                     <Image src={leftArrowImageSrc} data-testid="left-arrow" className={`h-[40px] absolute -left-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45} />
                      <Lottie
                         animationData={AnimatedLeftArrows}
                         loop={true}
@@ -245,7 +246,7 @@ export default function P2Pslider() {
                            className="relative -bottom-[10px]"
                         />
                      </div>              
-                     <Image src={rightArrowImageSrc} className={`h-[40px] absolute -right-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45} />
+                     <Image src={rightArrowImageSrc} data-testid="right-arrow" className={`h-[40px] absolute -right-[20px] ${isDragging ? "block" : "hidden"}`} alt="" width={65} height={45} />
                      <Lottie
                         animationData={AnimatedRightArrows}
                         loop={true}
@@ -309,11 +310,11 @@ export default function P2Pslider() {
             {panelState.action === "accepted" ? "View Bet Details" : "Back to Bets"}
          </button>
          </div>
-
          {panelState.isOpen && (
             <div
                className="fixed inset-0 bg-black opacity-50 z-[999]"
                onClick={closePanel}
+               data-testid="overlay"
             ></div>
          )}
       </div>
